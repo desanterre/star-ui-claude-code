@@ -1,0 +1,234 @@
+{
+  "name": "star-ui-claude-code",
+  "displayName": "Star UI for Claude Code",
+  "description": "A pixel-art office for your Claude Code agents: watch Claude and its sub-agents work, follow their meetings, and brief your whole team.",
+  "version": "0.1.0",
+  "publisher": "desanterre",
+  "license": "SEE LICENSE IN LICENSE",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1a1a2e",
+    "theme": "dark"
+  },
+  "homepage": "https://github.com/desanterre/star-ui-claude-code#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/desanterre/star-ui-claude-code.git"
+  },
+  "bugs": {
+    "url": "https://github.com/desanterre/star-ui-claude-code/issues"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Visualization",
+    "AI",
+    "Other"
+  ],
+  "keywords": [
+    "claude code",
+    "claude",
+    "sub-agents",
+    "subagents",
+    "multi-agent",
+    "agents",
+    "pixel art",
+    "star office",
+    "dashboard"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": false
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "starUiClaude",
+          "title": "Claude Office",
+          "icon": "images/panel-icon.svg"
+        }
+      ],
+      "activitybar": [
+        {
+          "id": "starUiClaudeBar",
+          "title": "Claude Office",
+          "icon": "images/panel-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "starUiClaude": [
+        {
+          "type": "webview",
+          "id": "starUiClaude.office",
+          "name": "Claude Office"
+        }
+      ],
+      "starUiClaudeBar": [
+        {
+          "id": "starUiClaude.home",
+          "name": "Claude Office"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "starUiClaude.openOffice",
+        "title": "Open the Office in an Editor Tab",
+        "category": "Star UI",
+        "icon": "$(link-external)"
+      },
+      {
+        "command": "starUiClaude.connect",
+        "title": "Connect to Claude Code",
+        "category": "Star UI"
+      },
+      {
+        "command": "starUiClaude.disconnect",
+        "title": "Disconnect from Claude Code",
+        "category": "Star UI"
+      },
+      {
+        "command": "starUiClaude.createTeam",
+        "title": "Create a Virtual Team of Agents",
+        "category": "Star UI"
+      },
+      {
+        "command": "starUiClaude.toggleDemo",
+        "title": "Toggle Demo Mode",
+        "category": "Star UI"
+      },
+      {
+        "command": "starUiClaude.openClaude",
+        "title": "Open Claude Code",
+        "category": "Star UI"
+      },
+      {
+        "command": "starUiClaude.showLog",
+        "title": "Show Log",
+        "category": "Star UI"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "starUiClaude.openOffice",
+          "when": "view == starUiClaude.office",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Star UI for Claude Code",
+      "properties": {
+        "starUiClaude.language": {
+          "type": "string",
+          "enum": [
+            "en",
+            "fr",
+            "auto"
+          ],
+          "enumDescriptions": [
+            "English",
+            "Français",
+            "Follow the VS Code display language (French if VS Code is in French, English otherwise)"
+          ],
+          "default": "en",
+          "description": "Language of the office."
+        },
+        "starUiClaude.officeName": {
+          "type": "string",
+          "default": "",
+          "description": "Text on the office plaque. Empty = \"Claude Office\"."
+        },
+        "starUiClaude.room": {
+          "type": "string",
+          "enum": [
+            "office",
+            "lodge"
+          ],
+          "enumDescriptions": [
+            "The classic Star Office",
+            "A snowy mountain lodge"
+          ],
+          "default": "office",
+          "description": "Background of the office."
+        },
+        "starUiClaude.scope": {
+          "type": "string",
+          "enum": [
+            "workspace",
+            "all"
+          ],
+          "enumDescriptions": [
+            "Claude Code sessions working inside this workspace (VS Code extension or terminal)",
+            "Every Claude Code session on this machine"
+          ],
+          "default": "workspace",
+          "description": "Which Claude Code sessions appear in the office."
+        },
+        "starUiClaude.showBuiltInAgents": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show Claude Code's built-in sub-agents (Explore, Plan, general-purpose) in the office even when they are idle."
+        },
+        "starUiClaude.lingerSeconds": {
+          "type": "number",
+          "default": 20,
+          "minimum": 0,
+          "description": "How long an agent stays at its desk after finishing, before going back to the lounge."
+        },
+        "starUiClaude.statusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the Star Office item in the status bar."
+        },
+        "starUiClaude.claudeConfigDir": {
+          "type": "string",
+          "default": "",
+          "description": "Claude Code config folder, where the hooks are installed in settings.json and the agents live. Empty = CLAUDE_CONFIG_DIR, or ~/.claude."
+        }
+      }
+    },
+    "viewsWelcome": [
+      {
+        "view": "starUiClaude.home",
+        "contents": "Your Claude Code agents, as a pixel office.\n[Open the office](command:starUiClaude.openOffice)\n[Connect to Claude Code](command:starUiClaude.connect)\n[Create a virtual team](command:starUiClaude.createTeam)\nThe office also lives in the bottom panel, next to the terminal."
+      },
+      {
+        "view": "starUiClaude.home",
+        "contents": "[Try the demo](command:starUiClaude.toggleDemo)",
+        "when": "!starUiClaude.live"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "watch": "node scripts/build.mjs --watch",
+    "typecheck": "tsc -p . --noEmit",
+    "test": "node scripts/build.mjs --tests && node --test --test-reporter=spec \"out/test/*.test.js\"",
+    "preview": "node scripts/preview.mjs",
+    "package": "vsce package --no-dependencies",
+    "vscode:prepublish": "node scripts/build.mjs --production",
+    "test:vscode": "node scripts/build.mjs && node test/vscode/run.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^3.6.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.8.0"
+  }
+}
